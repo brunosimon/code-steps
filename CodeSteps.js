@@ -208,10 +208,25 @@ export default class CodeSteps
                         const letter = line[_letterIndex]
 
                         if(
-                            (lineIndex > _range.start.line && lineIndex < _range.end.line) ||
+                            // Between lines
                             (
-                                (lineIndex === _range.start.line && letterIndex >= _range.start.column) &&
-                                (lineIndex === _range.end.line && letterIndex <= _range.end.column)
+                                lineIndex > _range.start.line && lineIndex < _range.end.line
+                            ) ||
+                            // One line and between columns
+                            (
+                                _range.start.line === _range.end.line &&
+                                (
+                                    (lineIndex === _range.start.line && letterIndex >= _range.start.column) &&
+                                    (lineIndex === _range.end.line && letterIndex <= _range.end.column)
+                                )
+                            ) ||
+                            // One line and between columns
+                            (
+                                _range.start.line !== _range.end.line &&
+                                (
+                                    (lineIndex === _range.start.line && letterIndex >= _range.start.column) ||
+                                    (lineIndex === _range.end.line && letterIndex <= _range.end.column)
+                                )
                             )
                         )
                         {
