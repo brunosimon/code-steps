@@ -12,7 +12,7 @@ export default class CodeStepManager
     parse(_$target = null)
     {
         const $target = !_$target ? document.body : _$target
-        const $codeSteps = $target.querySelectorAll('.code-step')
+        const $codeSteps = $target.querySelectorAll('.code-steps')
 
         for(const $codeStep of $codeSteps)
         {

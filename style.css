@@ -1,0 +1,17 @@
+.code-steps
+{
+    overflow: scroll;
+    height: 120px;
+}
+
+.code-steps .letter
+{
+    opacity: 0.3;
+    transition: opacity 0.1s;
+    will-change: opacity;
+}
+
+.code-steps .letter.is-active
+{
+    opacity: 1;
+}

@@ -52,6 +52,7 @@ export default class CodeSteps
     {
         this.code = {}
 
+        this.code.$code = this.$target.querySelector('code')
         this.code.text = this.trim ? this.text.trim() : this.trim
         this.code.baseHtml = Prism.highlight(this.code.text, Prism.languages[this.type], this.type)
 
@@ -73,8 +74,7 @@ export default class CodeSteps
                 // Create letter with same classes
                 const $letter = document.createElement('span')
                 $letter.innerHTML = _letter
-                $letter.style.opacity = 0.35
-                $letter.style.willChange = 'opacity'
+                $letter.classList.add('letter')
 
                 if(_$child.nodeType !== Node.TEXT_NODE)
                 {
@@ -109,14 +109,11 @@ export default class CodeSteps
         }
 
         // Set DOM and classes
-        this.$target.innerHTML = ''
-        this.$target.appendChild($newFragment)
-        this.$target.classList.add(`language-${this.type}`)
+        this.code.$code.innerHTML = ''
+        this.code.$code.appendChild($newFragment)
+        this.code.$code.classList.add(`language-${this.type}`)
 
-        if(this.$target.parentElement.tagName === 'PRE')
-        {
-            this.$target.parentElement.classList.add(`language-${this.type}`)
-        }
+        this.$target.classList.add(`language-${this.type}`)
     }
 
     setSteps()
@@ -351,7 +348,7 @@ export default class CodeSteps
 
             for(const _letter of oldStep.letters)
             {
-                _letter.style.opacity = 0.35
+                _letter.classList.remove('is-active')
             }
         }
 
@@ -360,7 +357,7 @@ export default class CodeSteps
 
         for(const _letter of newStep.letters)
         {
-            _letter.style.opacity = 1
+            _letter.classList.add('is-active')
         }
 
         this.navigation.index = _index
