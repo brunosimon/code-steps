@@ -8,6 +8,9 @@ export default class CodeSteps
         // Set code
         this.setCode()
 
+        // Set description
+        this.setDescription()
+
         // Set steps
         this.setSteps()
 
@@ -52,6 +55,7 @@ export default class CodeSteps
     {
         this.code = {}
 
+        this.code.$pre = this.$target.querySelector('pre')
         this.code.$code = this.$target.querySelector('code')
         this.code.text = this.trim ? this.text.trim() : this.trim
         this.code.baseHtml = Prism.highlight(this.code.text, Prism.languages[this.type], this.type)
@@ -113,7 +117,7 @@ export default class CodeSteps
         this.code.$code.appendChild($newFragment)
         this.code.$code.classList.add(`language-${this.type}`)
 
-        this.$target.classList.add(`language-${this.type}`)
+        this.code.$pre.classList.add(`language-${this.type}`)
     }
 
     setSteps()
@@ -127,7 +131,19 @@ export default class CodeSteps
 
         this.steps.base = this.$target.dataset.steps
         this.steps.all = this.parseSteps(this.steps.base)
-        console.log(this.steps.all)
+    }
+
+    setDescription()
+    {
+        this.description = {}
+        this.description.all = []
+
+        // Container
+        this.description.$container = document.createElement('div')
+        this.description.$container.classList.add('descriptions')
+
+        // Add to DOM
+        this.$target.appendChild(this.description.$container)
     }
 
     parseSteps(_input = '')
@@ -162,6 +178,19 @@ export default class CodeSteps
 
             step.ranges = this.parseRanges(stepParts[0])
             step.text = stepParts[1]
+
+            // Description
+            step.description = {}
+
+            step.description.$element = document.createElement('div')
+            step.description.$element.classList.add('description')
+
+            step.description.$inner = document.createElement('div')
+            step.description.$inner.classList.add('inner')
+            step.description.$inner.textContent = step.text
+            step.description.$element.appendChild(step.description.$inner)
+
+            this.description.$container.appendChild(step.description.$element)
 
             // Letters
             step.letters = []
@@ -350,6 +379,8 @@ export default class CodeSteps
             {
                 _letter.classList.remove('is-active')
             }
+
+            oldStep.description.$element.classList.remove('is-active')
         }
 
         // New step
@@ -359,6 +390,8 @@ export default class CodeSteps
         {
             _letter.classList.add('is-active')
         }
+
+        newStep.description.$element.classList.add('is-active')
 
         this.navigation.index = _index
     }
