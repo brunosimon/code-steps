@@ -3,6 +3,13 @@
 {
     overflow: auto;
     position: relative;
+    font-size: 0;
+
+    --controls-background: rgba(0, 0, 0, 0.3);
+    --controls-padding: 10px;
+    --descriptions-height: 0px;
+    --arrow-width: 40px;
+    --font-size: 16px;
 }
 
 .code-steps pre[class*="language-"]
@@ -11,6 +18,8 @@
     display: inline-block;
     min-width: 100%;
     box-sizing: border-box;
+    font-size: var(--font-size);
+    padding-bottom: calc(var(--descriptions-height) + var(--controls-padding) * 2)
 }
 
 /* Letters */
@@ -29,10 +38,10 @@
 /* Descriptions */
 .code-steps .descriptions
 {
-    position: sticky;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
+    position: absolute;
+    bottom: var(--controls-padding);
+    left: calc(var(--arrow-width) + var(--controls-padding) * 2);
+    right: calc(var(--arrow-width) + var(--controls-padding) * 2);
 }
 
 .code-steps .descriptions .description
@@ -42,6 +51,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    height: var(--descriptions-height);
     align-items: center;
     justify-content: center;
     opacity: 0;
@@ -57,12 +67,47 @@
 
 .code-steps .descriptions .description .inner
 {
-    padding: 16px 32px;
+    padding: 10px 20px;
     text-align: center;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--controls-background);
     color: #ffffff;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: var(--font-size);
 }
 
+/* Arrows */
+.code-steps .arrow
+{
+    display: flex;
+    position: absolute;
+    bottom: var(--controls-padding);
+    width: var(--arrow-width);
+    height: var(--descriptions-height);
+    align-items: center;
+    justify-content: center;
+    background: var(--controls-background);
+    font-size: var(--font-size);
+    color: #ffffff;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+    will-change: opacity;
+}
+
+.code-steps .arrow.is-active
+{
+    opacity: 1;
+}
+
+.code-steps .arrow.previous
+{
+    transform: rotate(180deg);
+    left: var(--controls-padding);
+}
+
+.code-steps .arrow.next
+{
+    right: var(--controls-padding);
+}
