@@ -1,7 +1,6 @@
 /* Base */
 .code-steps
 {
-    /* height: 120px; */
     overflow: auto;
     position: relative;
 }
@@ -9,6 +8,9 @@
 .code-steps pre[class*="language-"]
 {
     margin: 0;
+    display: inline-block;
+    min-width: 100%;
+    box-sizing: border-box;
 }
 
 /* Letters */
@@ -27,7 +29,7 @@
 /* Descriptions */
 .code-steps .descriptions
 {
-    position: absolute;
+    position: sticky;
     bottom: 10px;
     left: 10px;
     right: 10px;
