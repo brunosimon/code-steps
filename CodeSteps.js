@@ -364,15 +364,31 @@ export default class CodeSteps
 
         this.sizes.update = () =>
         {
+            // Retrieve all sizes
             const containerBoundings = this.$target.getBoundingClientRect()
 
             this.sizes.width = containerBoundings.width
             this.sizes.height = containerBoundings.height
+            this.sizes.descriptionsHeight = 0
+            this.sizes.descriptionsPadding = 0
 
             for(const _step of this.steps.all)
             {
                 const descriptionBoundings = _step.description.$element.getBoundingClientRect()
+
+                if(descriptionBoundings.height > this.sizes.descriptionsHeight)
+                {
+                    this.sizes.descriptionsHeight = descriptionBoundings.height
+                }
+
+                if(this.sizes.descriptionsPadding === null)
+                {
+                    this.sizes.descriptionsPadding = containerBoundings.bottom - descriptionBoundings.bottom
+                }
             }
+
+            // Update DOM
+            this.code.$pre.style.paddingBottom = `${this.sizes.descriptionsHeight + this.sizes.descriptionsPadding}px`
         }
 
         window.addEventListener('resize', () =>
