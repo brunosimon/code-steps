@@ -154,7 +154,7 @@ export default class CodeSteps
         const steps = []
 
         // Seperate steps
-        const stepsParts = _input.split(this.steps.stepsPattern)
+        const stepsParts = _input.replace(/^\n\s+|\n\s+$/gm, '').split(this.steps.stepsPattern)
 
         for(const _stepPart of stepsParts)
         {
@@ -372,7 +372,6 @@ export default class CodeSteps
             for(const _step of this.steps.all)
             {
                 const descriptionBoundings = _step.description.$element.getBoundingClientRect()
-                console.log(descriptionBoundings)
             }
         }
 
