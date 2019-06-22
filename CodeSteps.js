@@ -14,6 +14,9 @@ export default class CodeSteps
         // Set steps
         this.setSteps()
 
+        // Set sizes
+        this.setSizes()
+
         // Set navigation
         this.setNavigation()
 
@@ -347,6 +350,40 @@ export default class CodeSteps
         console.warn('CodeStep: Position not properly formated', _input)
 
         return false
+    }
+
+    setSizes()
+    {
+        this.sizes = {}
+        this.sizes.throttleDuration = 100
+        this.sizes.throttleTimeout = null
+
+        this.sizes.width = null
+        this.sizes.height = null
+        this.sizes.maxDescriptionHeight = null
+
+        this.sizes.update = () =>
+        {
+            const containerBoundings = this.$target.getBoundingClientRect()
+
+            this.sizes.width = containerBoundings.width
+            this.sizes.height = containerBoundings.height
+
+            for(const _step of this.steps.all)
+            {
+                const descriptionBoundings = _step.description.$element.getBoundingClientRect()
+                console.log(descriptionBoundings)
+            }
+        }
+
+        window.addEventListener('resize', () =>
+        {
+            window.clearTimeout(this.sizes.throttleTimeout)
+
+            this.sizes.throttleTimeout = window.setTimeout(this.sizes.update, this.sizes.throttleDuration)
+        })
+
+        this.sizes.update()
     }
 
     setNavigation()

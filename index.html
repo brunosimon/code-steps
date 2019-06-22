@@ -16,16 +16,19 @@
         class="code-steps"
         data-type="javascript"
         data-trim
-        data-steps="*:Kikoo;l1:Lorem ipsum dolor sit;l1c7-l1c12:Excepturi ab porro nostrum alias ipsa laboriosam;l3:Laboriosam;l4,l6:Lorem ipsum dolor sit amet consectetur adipisicing elit labore omnis atque tenetur? Sed vel;l5:Sed vel!"
+        data-steps="l1-l3:Retrieve elements from the DOM;l5-l6,l10:Execute a fonction every 50ms;l7:Calculate video time progress (between 0 and 1);l9:Update element"
     >
         <pre><code>
-class Popin
+const video = document.querySelector('video')
+const bar = document.querySelector('.bar')
+const cursor = document.querySelector('.cursor')
+
+window.setInterval(() =>
 {
-    constructor()
-    {
-        this.toto = 'tata'
-    }
-}
+    const progress = video.currentTime / video.duration
+
+    cursor.style.transform = `scaleX(${progress})`
+}, 50)
         </code></pre>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.js" data-manual></script>
