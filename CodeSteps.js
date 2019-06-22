@@ -183,17 +183,20 @@ export default class CodeSteps
             step.text = stepParts[1]
 
             // Description
-            step.description = {}
+            step.description = step.text === '' ? false : {}
 
-            step.description.$element = document.createElement('div')
-            step.description.$element.classList.add('description')
+            if(step.description)
+            {
+                step.description.$element = document.createElement('div')
+                step.description.$element.classList.add('description')
 
-            step.description.$inner = document.createElement('div')
-            step.description.$inner.classList.add('inner')
-            step.description.$inner.textContent = step.text
-            step.description.$element.appendChild(step.description.$inner)
+                step.description.$inner = document.createElement('div')
+                step.description.$inner.classList.add('inner')
+                step.description.$inner.textContent = step.text
+                step.description.$element.appendChild(step.description.$inner)
 
-            this.description.$container.appendChild(step.description.$element)
+                this.description.$container.appendChild(step.description.$element)
+            }
 
             // Letters
             step.letters = []
@@ -370,25 +373,22 @@ export default class CodeSteps
             this.sizes.width = containerBoundings.width
             this.sizes.height = containerBoundings.height
             this.sizes.descriptionsHeight = 0
-            this.sizes.descriptionsPadding = 0
 
             for(const _step of this.steps.all)
             {
-                const descriptionBoundings = _step.description.$element.getBoundingClientRect()
-
-                if(descriptionBoundings.height > this.sizes.descriptionsHeight)
+                if(_step.description)
                 {
-                    this.sizes.descriptionsHeight = descriptionBoundings.height
-                }
+                    const descriptionBoundings = _step.description.$inner.getBoundingClientRect()
 
-                if(this.sizes.descriptionsPadding === null)
-                {
-                    this.sizes.descriptionsPadding = containerBoundings.bottom - descriptionBoundings.bottom
+                    if(descriptionBoundings.height > this.sizes.descriptionsHeight)
+                    {
+                        this.sizes.descriptionsHeight = descriptionBoundings.height
+                    }
                 }
             }
 
             // Update DOM
-            this.code.$pre.style.paddingBottom = `${this.sizes.descriptionsHeight + this.sizes.descriptionsPadding}px`
+            this.$target.style.setProperty('--descriptions-height', `${this.sizes.descriptionsHeight}px`)
         }
 
         window.addEventListener('resize', () =>
@@ -404,6 +404,33 @@ export default class CodeSteps
     setNavigation()
     {
         this.navigation = {}
+
+        // Arrows
+        this.navigation.arrows = {}
+        this.navigation.arrows.$previous = document.createElement('div')
+        this.navigation.arrows.$previous.classList.add('arrow', 'previous')
+        this.navigation.arrows.$previous.textContent = '⮕'
+        this.$target.appendChild(this.navigation.arrows.$previous)
+
+        this.navigation.arrows.$previous.addEventListener('click', (_event) =>
+        {
+            _event.preventDefault()
+
+            this.previous()
+        })
+
+        this.navigation.arrows.$next = document.createElement('div')
+        this.navigation.arrows.$next.classList.add('arrow', 'next')
+        this.navigation.arrows.$next.textContent = '⮕'
+        this.$target.appendChild(this.navigation.arrows.$next)
+
+        this.navigation.arrows.$next.addEventListener('click', (_event) =>
+        {
+            _event.preventDefault()
+
+            this.next()
+        })
+
         this.navigation.index = null
 
         window.addEventListener('keydown', (_event) =>
@@ -447,7 +474,10 @@ export default class CodeSteps
                 _letter.classList.remove('is-active')
             }
 
-            oldStep.description.$element.classList.remove('is-active')
+            if(oldStep.description)
+            {
+                oldStep.description.$element.classList.remove('is-active')
+            }
         }
 
         // New step
@@ -458,8 +488,31 @@ export default class CodeSteps
             _letter.classList.add('is-active')
         }
 
-        newStep.description.$element.classList.add('is-active')
+        if(newStep.description)
+        {
+            newStep.description.$element.classList.add('is-active')
+        }
 
+        // Arrows
+        if(_index === 0)
+        {
+            this.navigation.arrows.$previous.classList.remove('is-active')
+        }
+        else
+        {
+            this.navigation.arrows.$previous.classList.add('is-active')
+        }
+
+        if(_index === this.steps.all.length - 1)
+        {
+            this.navigation.arrows.$next.classList.remove('is-active')
+        }
+        else
+        {
+            this.navigation.arrows.$next.classList.add('is-active')
+        }
+
+        // Save
         this.navigation.index = _index
     }
 }
