@@ -64,6 +64,9 @@ export default class CodeSteps
 
         // Trim (optional)
         this.trim = typeof _options.trim !== 'undefined' ? _options.trim : false
+
+        // Active (optional)
+        this.active = typeof _options.active !== 'undefined' ? _options.active : true
     }
 
     setCode()
@@ -390,6 +393,12 @@ export default class CodeSteps
 
         this.sizes.update = () =>
         {
+            // Inactive
+            if(!this.active)
+            {
+                return
+            }
+
             // Retrieve all sizes
             const containerBoundings = this.$element.getBoundingClientRect()
 
@@ -437,6 +446,12 @@ export default class CodeSteps
 
         this.navigation.arrows.$previous.addEventListener('click', (_event) =>
         {
+            // Inactive
+            if(!this.active)
+            {
+                return
+            }
+
             _event.preventDefault()
 
             this.previous()
@@ -449,6 +464,12 @@ export default class CodeSteps
 
         this.navigation.arrows.$next.addEventListener('click', (_event) =>
         {
+            // Inactive
+            if(!this.active)
+            {
+                return
+            }
+
             _event.preventDefault()
 
             this.next()
@@ -458,10 +479,19 @@ export default class CodeSteps
 
         window.addEventListener('keydown', (_event) =>
         {
+            // Inactive
+            if(!this.active)
+            {
+                return
+            }
+
+            // Right arrow key
             if(_event.key === 'ArrowRight')
             {
                 this.next()
             }
+
+            // Left arrow key
             else if(_event.key === 'ArrowLeft')
             {
                 this.previous()
@@ -471,6 +501,13 @@ export default class CodeSteps
 
     previous()
     {
+        // Inactive
+        if(!this.active)
+        {
+            return
+        }
+
+        // In limit
         if(this.navigation.index > 0)
         {
             this.go(this.navigation.index - 1)
@@ -479,6 +516,13 @@ export default class CodeSteps
 
     next()
     {
+        // Inactive
+        if(!this.active)
+        {
+            return
+        }
+
+        // In limit
         if(this.navigation.index < this.steps.all.length - 1)
         {
             this.go(this.navigation.index + 1)
@@ -487,6 +531,12 @@ export default class CodeSteps
 
     go(_index)
     {
+        // Inactive
+        if(!this.active)
+        {
+            return
+        }
+
         // Old step
         if(this.navigation.index !== null)
         {
@@ -537,5 +587,48 @@ export default class CodeSteps
 
         // Save
         this.navigation.index = _index
+    }
+
+    activate()
+    {
+        this.active = true
+
+        this.sizes.update()
+
+        this.go(this.navigation.index)
+    }
+
+    deactivate()
+    {
+        this.active = false
+
+        // if(this.navigation.index !== null)
+        // {
+        //     const oldStep = this.steps.all[this.navigation.index]
+
+        //     if(oldStep.description)
+        //     {
+        //         oldStep.description.$element.classList.remove('cs-is-active')
+        //     }
+        // }
+
+        for(const _step of this.steps.all)
+        {
+            if(_step.description)
+            {
+                _step.description.$element.classList.remove('cs-is-active')
+            }
+        }
+
+        for(const _line of this.code.lines)
+        {
+            for(const _$letter of _line)
+            {
+                _$letter.classList.remove('cs-is-active')
+            }
+        }
+
+        this.navigation.arrows.$previous.classList.remove('cs-is-active')
+        this.navigation.arrows.$next.classList.remove('cs-is-active')
     }
 }
