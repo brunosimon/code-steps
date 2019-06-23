@@ -78,7 +78,6 @@ export default class CodeSteps
 
         // Text
         this.code.text = this.text
-
         this.code.text = this.code.text.replace(/\t/g, '    ')
 
         if(this.trim)
@@ -158,7 +157,13 @@ export default class CodeSteps
         this.steps.rangesPattern = /\s*,\s*/
         this.steps.rangePattern = /\s*-\s*/
 
-        this.steps.base = this.$element.dataset.steps
+        this.steps.base = typeof this.steps.base !== 'undefined' ? this.$element.dataset.steps : ''
+
+        if(this.steps.base.trim() === '')
+        {
+            this.steps.base = '*:'
+        }
+
         this.steps.all = this.parseSteps(this.steps.base)
     }
 
