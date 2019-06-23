@@ -9,16 +9,16 @@ export default class CodeStepManager
         this.parse()
     }
 
-    parse(_$target = null)
+    parse(_$element = null)
     {
-        const $target = !_$target ? document.body : _$target
-        const $codeSteps = $target.querySelectorAll('.code-steps')
+        const $element = !_$element ? document.body : _$element
+        const $codeSteps = $element.querySelectorAll('.code-steps')
 
         for(const $codeStep of $codeSteps)
         {
             const options = {}
 
-            options.$target = $codeStep
+            options.$element = $codeStep
             options.text = $codeStep.innerText
 
             if(typeof $codeStep.dataset.type !== 'undefined')

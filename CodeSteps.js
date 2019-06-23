@@ -27,11 +27,11 @@ export default class CodeSteps
     setOptions(_options)
     {
         // Target (mandatory)
-        this.$target = _options.$target
+        this.$element = _options.$element
 
-        if(!this.$target)
+        if(!this.$element)
         {
-            console.warn('CodeStep: Missing $target', this)
+            console.warn('CodeStep: Missing $element', this)
         }
 
         // Type (mandatory)
@@ -66,8 +66,8 @@ export default class CodeSteps
     {
         this.code = {}
 
-        this.code.$pre = this.$target.querySelector('pre')
-        this.code.$code = this.$target.querySelector('code')
+        this.code.$pre = this.$element.querySelector('pre')
+        this.code.$code = this.$element.querySelector('code')
         this.code.text = this.trim ? this.text.trim() : this.trim
         this.code.baseHtml = this.Prism.highlight(this.code.text, this.Prism.languages[this.type], this.type)
 
@@ -140,7 +140,7 @@ export default class CodeSteps
         this.steps.rangesPattern = /\s*,\s*/
         this.steps.rangePattern = /\s*-\s*/
 
-        this.steps.base = this.$target.dataset.steps
+        this.steps.base = this.$element.dataset.steps
         this.steps.all = this.parseSteps(this.steps.base)
     }
 
@@ -154,7 +154,7 @@ export default class CodeSteps
         this.description.$container.classList.add('descriptions')
 
         // Add to DOM
-        this.$target.appendChild(this.description.$container)
+        this.$element.appendChild(this.description.$container)
     }
 
     parseSteps(_input = '')
@@ -376,7 +376,7 @@ export default class CodeSteps
         this.sizes.update = () =>
         {
             // Retrieve all sizes
-            const containerBoundings = this.$target.getBoundingClientRect()
+            const containerBoundings = this.$element.getBoundingClientRect()
 
             this.sizes.width = containerBoundings.width
             this.sizes.height = containerBoundings.height
@@ -396,7 +396,7 @@ export default class CodeSteps
             }
 
             // Update DOM
-            this.$target.style.setProperty('--descriptions-height', `${this.sizes.descriptionsHeight}px`)
+            this.$element.style.setProperty('--descriptions-height', `${this.sizes.descriptionsHeight}px`)
         }
 
         window.addEventListener('resize', () =>
@@ -418,7 +418,7 @@ export default class CodeSteps
         this.navigation.arrows.$previous = document.createElement('div')
         this.navigation.arrows.$previous.classList.add('arrow', 'previous')
         this.navigation.arrows.$previous.textContent = '⮕'
-        this.$target.appendChild(this.navigation.arrows.$previous)
+        this.$element.appendChild(this.navigation.arrows.$previous)
 
         this.navigation.arrows.$previous.addEventListener('click', (_event) =>
         {
@@ -430,7 +430,7 @@ export default class CodeSteps
         this.navigation.arrows.$next = document.createElement('div')
         this.navigation.arrows.$next.classList.add('arrow', 'next')
         this.navigation.arrows.$next.textContent = '⮕'
-        this.$target.appendChild(this.navigation.arrows.$next)
+        this.$element.appendChild(this.navigation.arrows.$next)
 
         this.navigation.arrows.$next.addEventListener('click', (_event) =>
         {
