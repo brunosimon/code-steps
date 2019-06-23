@@ -50,6 +50,14 @@ export default class CodeSteps
             console.warn('CodeStep: Missing text', this)
         }
 
+        // Prism
+        this.Prism = typeof _options.Prism !== 'undefined' ? _options.Prism : window.Prism
+
+        if(!this.Prism)
+        {
+            console.warn('CodeStep: Missing Prism library', this)
+        }
+
         // Trim (optional)
         this.trim = typeof _options.trim !== 'undefined' ? _options.trim : false
     }
@@ -61,7 +69,7 @@ export default class CodeSteps
         this.code.$pre = this.$target.querySelector('pre')
         this.code.$code = this.$target.querySelector('code')
         this.code.text = this.trim ? this.text.trim() : this.trim
-        this.code.baseHtml = Prism.highlight(this.code.text, Prism.languages[this.type], this.type)
+        this.code.baseHtml = this.Prism.highlight(this.code.text, this.Prism.languages[this.type], this.type)
 
         // Base fragment
         const $baseFragment = document.createElement('div')
