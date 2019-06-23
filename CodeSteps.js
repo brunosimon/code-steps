@@ -8,24 +8,24 @@ export default class CodeSteps
         // Set code
         this.setCode()
 
-        // Set description
-        this.setDescription()
+        // // Set description
+        // this.setDescription()
 
-        // Set steps
-        this.setSteps()
+        // // Set steps
+        // this.setSteps()
 
-        // Set sizes
-        this.setSizes()
+        // // Set sizes
+        // this.setSizes()
 
-        // Set navigation
-        this.setNavigation()
+        // // Set navigation
+        // this.setNavigation()
 
-        // Go to first step
-        this.go(0)
+        // // Go to first step
+        // this.go(0)
 
-        // Save in Element
-        this.$element.classList.add('code-steps-set')
-        this.$element.codeSteps = this
+        // // Save in Element
+        // this.$element.classList.add('code-steps-set')
+        // this.$element.codeSteps = this
     }
 
     setOptions(_options)
@@ -99,50 +99,84 @@ export default class CodeSteps
         this.code.lines = []
         let line = []
         let latestLetter = null
-        for(const _$child of $baseFragment.childNodes)
+
+        const extractLetters = (_input) =>
         {
-            for(const _letter of _$child.textContent)
+            for(let i = 0; i < _input.childNodes.length; i++)
             {
-                // Create letter with same classes
-                const $letter = document.createElement('span')
-                $letter.innerHTML = _letter
-                $letter.classList.add('cs-letter')
+                const child = _input.childNodes[i]
 
-                if(_$child.nodeType !== Node.TEXT_NODE)
+                if(child.nodeType === Node.TEXT_NODE)
                 {
-                    $letter.classList.add(..._$child.classList)
+                    const $letters = document.createElement('span')
+                    for(const _letter of child.textContent)
+                    {
+                        const $letter = document.createElement('span')
+                        $letter.innerHTML = _letter
+                        $letter.classList.add('cs-letter')
+
+                        $letters.appendChild($letter)
+                    }
+
+                    _input.removeChild(child)
+                    _input.insertBefore($letters, _input.childNodes[i])
                 }
-
-                // Add to new fragment
-                $newFragment.appendChild($letter)
-
-                // Save in current line
-                if(_letter !== '\n')
-                {
-                    line.push($letter)
-                }
-
-                // Save line to lines if line break
                 else
                 {
-                    this.code.lines.push(line)
-                    line = []
+                    extractLetters(child)
                 }
-
-                // Save latest letter
-                latestLetter = _letter
             }
         }
 
-        // If latest letter saved wasn't a line break, save line
-        if(latestLetter !== '\n')
-        {
-            this.code.lines.push(line)
-        }
+        extractLetters($baseFragment)
+
+        // this.code.$code.appendChild($baseFragment)
+        // for(const _$child of $baseFragment.childNodes)
+        // {
+        //     console.log(_$child)
+        //     for(const _letter of _$child.textContent)
+        //     {
+        //         // Create letter with same classes
+        //         const $letter = document.createElement('span')
+        //         $letter.innerHTML = _letter
+        //         $letter.classList.add('cs-letter')
+
+        //         if(_$child.nodeType !== Node.TEXT_NODE)
+        //         {
+        //             $letter.classList.add(..._$child.classList)
+        //         }
+
+        //         // Add to new fragment
+        //         $newFragment.appendChild($letter)
+
+        //         // Save in current line
+        //         if(_letter !== '\n')
+        //         {
+        //             line.push($letter)
+        //         }
+
+        //         // Save line to lines if line break
+        //         else
+        //         {
+        //             this.code.lines.push(line)
+        //             line = []
+        //         }
+
+        //         // Save latest letter
+        //         latestLetter = _letter
+        //     }
+        // }
+
+        // // If latest letter saved wasn't a line break, save line
+        // if(latestLetter !== '\n')
+        // {
+        //     this.code.lines.push(line)
+        // }
 
         // Set DOM and classes
         this.code.$code.innerHTML = ''
-        this.code.$code.appendChild($newFragment)
+        // this.code.$code.appendChild($newFragment)
+        this.code.$code.innerHTML = $baseFragment.innerHTML
         this.code.$code.classList.add(`language-${this.type}`)
 
         this.code.$pre.classList.add(`language-${this.type}`)
