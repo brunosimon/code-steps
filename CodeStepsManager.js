@@ -37,6 +37,11 @@ export default class CodeStepManager
                     options.trim = true
                 }
 
+                if(typeof _$codeSteps.dataset.active !== 'undefined')
+                {
+                    options.active = _$codeSteps.dataset.active !== 'false' && _$codeSteps.dataset.active !== '0'
+                }
+
                 // Instanciate
                 const codeStep = new CodeStep(options)
 

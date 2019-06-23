@@ -591,27 +591,22 @@ export default class CodeSteps
 
     activate()
     {
+        // Save
         this.active = true
 
+        // Update sizes
         this.sizes.update()
 
+        // Go to previous index to re-activate each element
         this.go(this.navigation.index)
     }
 
     deactivate()
     {
+        // Save
         this.active = false
 
-        // if(this.navigation.index !== null)
-        // {
-        //     const oldStep = this.steps.all[this.navigation.index]
-
-        //     if(oldStep.description)
-        //     {
-        //         oldStep.description.$element.classList.remove('cs-is-active')
-        //     }
-        // }
-
+        // Deactivate descriptions
         for(const _step of this.steps.all)
         {
             if(_step.description)
@@ -620,6 +615,7 @@ export default class CodeSteps
             }
         }
 
+        // Deactivate letters
         for(const _line of this.code.lines)
         {
             for(const _$letter of _line)
@@ -628,6 +624,7 @@ export default class CodeSteps
             }
         }
 
+        // Deactivate arrows
         this.navigation.arrows.$previous.classList.remove('cs-is-active')
         this.navigation.arrows.$next.classList.remove('cs-is-active')
     }
