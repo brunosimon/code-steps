@@ -22,6 +22,10 @@ export default class CodeSteps
 
         // Go to first step
         this.go(0)
+
+        // Save in Element
+        this.$element.classList.add('code-steps-set')
+        this.$element.codeSteps = this
     }
 
     setOptions(_options)
@@ -31,7 +35,7 @@ export default class CodeSteps
 
         if(!this.$element)
         {
-            console.warn('CodeStep: Missing $element', this)
+            console.warn('CodeSteps: Missing $element', this)
         }
 
         // Type (mandatory)
@@ -39,7 +43,7 @@ export default class CodeSteps
 
         if(!this.type)
         {
-            console.warn('CodeStep: Missing type', this)
+            console.warn('CodeSteps: Missing type', this)
         }
 
         // Text (mandatory)
@@ -47,7 +51,7 @@ export default class CodeSteps
 
         if(!this.text)
         {
-            console.warn('CodeStep: Missing text', this)
+            console.warn('CodeSteps: Missing text', this)
         }
 
         // Prism
@@ -55,7 +59,7 @@ export default class CodeSteps
 
         if(!this.Prism)
         {
-            console.warn('CodeStep: Missing Prism library', this)
+            console.warn('CodeSteps: Missing Prism library', this)
         }
 
         // Trim (optional)
@@ -253,7 +257,7 @@ export default class CodeSteps
             return step
         }
 
-        console.warn('CodeStep: Step not properly formated', _input)
+        console.warn('CodeSteps: Step not properly formated', _input)
 
         return false
     }
@@ -325,7 +329,7 @@ export default class CodeSteps
             }
         }
 
-        console.warn('CodeStep: Range not properly formated', _input)
+        console.warn('CodeSteps: Range not properly formated', _input)
 
         return false
     }
@@ -358,7 +362,7 @@ export default class CodeSteps
             return position
         }
 
-        console.warn('CodeStep: Position not properly formated', _input)
+        console.warn('CodeSteps: Position not properly formated', _input)
 
         return false
     }

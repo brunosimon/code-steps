@@ -5,35 +5,49 @@ export default class CodeStepManager
     constructor()
     {
         this.all = []
-
-        this.parse()
     }
 
     parse(_$element = null)
     {
+        // Set up
+        const codeStepsFound = []
         const $element = !_$element ? document.body : _$element
         const $codeSteps = $element.querySelectorAll('.code-steps')
 
-        for(const $codeStep of $codeSteps)
+        // Each code step found
+        for(const _$codeSteps of $codeSteps)
         {
-            const options = {}
+            const alreadySet = _$codeSteps.classList.contains('code-steps-set')
 
-            options.$element = $codeStep
-            options.text = $codeStep.innerText
-
-            if(typeof $codeStep.dataset.type !== 'undefined')
+            if(!alreadySet)
             {
-                options.type = $codeStep.dataset.type
+                // Set options
+                const options = {}
+
+                options.$element = _$codeSteps
+                options.text = _$codeSteps.innerText
+
+                if(typeof _$codeSteps.dataset.type !== 'undefined')
+                {
+                    options.type = _$codeSteps.dataset.type
+                }
+
+                if(typeof _$codeSteps.dataset.trim !== 'undefined')
+                {
+                    options.trim = true
+                }
+
+                // Instanciate
+                const codeStep = new CodeStep(options)
+
+                // Save
+                this.all.push(codeStep)
             }
 
-            if(typeof $codeStep.dataset.trim !== 'undefined')
-            {
-                options.trim = true
-            }
-
-            const codeStep = new CodeStep(options)
-
-            this.all.push(codeStep)
+            // Save
+            codeStepsFound.push(_$codeSteps.codeSteps)
         }
+
+        return codeStepsFound
     }
 }
