@@ -23,20 +23,20 @@
 }
 
 /* Letters */
-.code-steps .letter
+.code-steps .cs-letter
 {
     opacity: 0.3;
     transition: opacity 0.1s;
     will-change: opacity;
 }
 
-.code-steps .letter.is-active
+.code-steps .cs-letter.cs-is-active
 {
     opacity: 1;
 }
 
 /* Descriptions */
-.code-steps .descriptions
+.code-steps .cs-descriptions
 {
     position: absolute;
     bottom: var(--controls-padding);
@@ -44,7 +44,7 @@
     right: calc(var(--arrow-width) + var(--controls-padding) * 2);
 }
 
-.code-steps .descriptions .description
+.code-steps .cs-descriptions .cs-description
 {
     display: flex;
     position: absolute;
@@ -59,13 +59,13 @@
     will-change: opacity;
 }
 
-.code-steps .descriptions .description.is-active
+.code-steps .cs-descriptions .cs-description.cs-is-active
 {
     opacity: 1;
     transition-delay: 0.2s;
 }
 
-.code-steps .descriptions .description .inner
+.code-steps .cs-descriptions .cs-description .cs-inner
 {
     padding: 10px 20px;
     text-align: center;
@@ -78,7 +78,7 @@
 }
 
 /* Arrows */
-.code-steps .arrow
+.code-steps .cs-arrow
 {
     display: flex;
     position: absolute;
@@ -101,19 +101,19 @@
     user-select: none;
 }
 
-.code-steps .arrow.is-active
+.code-steps .cs-arrow.cs-is-active
 {
     opacity: 1;
     pointer-events: auto;
 }
 
-.code-steps .arrow.previous
+.code-steps .cs-arrow.cs-previous
 {
     transform: rotate(180deg);
     left: var(--controls-padding);
 }
 
-.code-steps .arrow.next
+.code-steps .cs-arrow.cs-next
 {
     right: var(--controls-padding);
 }

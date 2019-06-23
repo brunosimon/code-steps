@@ -93,7 +93,7 @@ export default class CodeSteps
                 // Create letter with same classes
                 const $letter = document.createElement('span')
                 $letter.innerHTML = _letter
-                $letter.classList.add('letter')
+                $letter.classList.add('cs-letter')
 
                 if(_$child.nodeType !== Node.TEXT_NODE)
                 {
@@ -155,7 +155,7 @@ export default class CodeSteps
 
         // Container
         this.description.$container = document.createElement('div')
-        this.description.$container.classList.add('descriptions')
+        this.description.$container.classList.add('cs-descriptions')
 
         // Add to DOM
         this.$element.appendChild(this.description.$container)
@@ -200,10 +200,10 @@ export default class CodeSteps
             if(step.description)
             {
                 step.description.$element = document.createElement('div')
-                step.description.$element.classList.add('description')
+                step.description.$element.classList.add('cs-description')
 
                 step.description.$inner = document.createElement('div')
-                step.description.$inner.classList.add('inner')
+                step.description.$inner.classList.add('cs-inner')
                 step.description.$inner.textContent = step.text
                 step.description.$element.appendChild(step.description.$inner)
 
@@ -420,7 +420,7 @@ export default class CodeSteps
         // Arrows
         this.navigation.arrows = {}
         this.navigation.arrows.$previous = document.createElement('div')
-        this.navigation.arrows.$previous.classList.add('arrow', 'previous')
+        this.navigation.arrows.$previous.classList.add('cs-arrow', 'cs-previous')
         this.navigation.arrows.$previous.textContent = '⮕'
         this.$element.appendChild(this.navigation.arrows.$previous)
 
@@ -432,7 +432,7 @@ export default class CodeSteps
         })
 
         this.navigation.arrows.$next = document.createElement('div')
-        this.navigation.arrows.$next.classList.add('arrow', 'next')
+        this.navigation.arrows.$next.classList.add('cs-arrow', 'cs-next')
         this.navigation.arrows.$next.textContent = '⮕'
         this.$element.appendChild(this.navigation.arrows.$next)
 
@@ -483,12 +483,12 @@ export default class CodeSteps
 
             for(const _letter of oldStep.letters)
             {
-                _letter.classList.remove('is-active')
+                _letter.classList.remove('cs-is-active')
             }
 
             if(oldStep.description)
             {
-                oldStep.description.$element.classList.remove('is-active')
+                oldStep.description.$element.classList.remove('cs-is-active')
             }
         }
 
@@ -497,31 +497,31 @@ export default class CodeSteps
 
         for(const _letter of newStep.letters)
         {
-            _letter.classList.add('is-active')
+            _letter.classList.add('cs-is-active')
         }
 
         if(newStep.description)
         {
-            newStep.description.$element.classList.add('is-active')
+            newStep.description.$element.classList.add('cs-is-active')
         }
 
         // Arrows
         if(_index === 0)
         {
-            this.navigation.arrows.$previous.classList.remove('is-active')
+            this.navigation.arrows.$previous.classList.remove('cs-is-active')
         }
         else
         {
-            this.navigation.arrows.$previous.classList.add('is-active')
+            this.navigation.arrows.$previous.classList.add('cs-is-active')
         }
 
         if(_index === this.steps.all.length - 1)
         {
-            this.navigation.arrows.$next.classList.remove('is-active')
+            this.navigation.arrows.$next.classList.remove('cs-is-active')
         }
         else
         {
-            this.navigation.arrows.$next.classList.add('is-active')
+            this.navigation.arrows.$next.classList.add('cs-is-active')
         }
 
         // Save
