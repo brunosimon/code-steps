@@ -72,7 +72,18 @@ export default class CodeSteps
 
         this.code.$pre = this.$element.querySelector('pre')
         this.code.$code = this.$element.querySelector('code')
-        this.code.text = this.trim ? this.text.trim() : this.trim
+
+        // Text
+        this.code.text = this.text
+
+        this.code.text = this.code.text.replace(/\t/g, '    ')
+
+        if(this.trim)
+        {
+            this.code.text = this.code.text.trim()
+        }
+
+        // HTML base from Prism
         this.code.baseHtml = this.Prism.highlight(this.code.text, this.Prism.languages[this.type], this.type)
 
         // Base fragment

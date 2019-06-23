@@ -31,7 +31,7 @@ const bar = player.querySelector('.bar')
 
 window.setInterval(() =>
 {
-    const progress = video.currentTime / video.duration
+	const progress = video.currentTime / video.duration
 
     bar.style.transform = `scaleX(${progress})`
 }, 50)
