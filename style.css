@@ -95,6 +95,10 @@
     pointer-events: none;
     transition: opacity 0.3s;
     will-change: opacity;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .code-steps .arrow.is-active
