@@ -92,6 +92,7 @@
     color: #ffffff;
     cursor: pointer;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.3s;
     will-change: opacity;
 }
@@ -99,6 +100,7 @@
 .code-steps .arrow.is-active
 {
     opacity: 1;
+    pointer-events: auto;
 }
 
 .code-steps .arrow.previous
