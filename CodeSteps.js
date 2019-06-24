@@ -8,24 +8,24 @@ export default class CodeSteps
         // Set code
         this.setCode()
 
-        // // Set description
-        // this.setDescription()
+        // Set descriptions
+        this.setDescriptions()
 
-        // // Set steps
-        // this.setSteps()
+        // Set steps
+        this.setSteps()
 
-        // // Set sizes
-        // this.setSizes()
+        // Set sizes
+        this.setSizes()
 
-        // // Set navigation
-        // this.setNavigation()
+        // Set navigation
+        this.setNavigation()
 
-        // // Go to first step
-        // this.go(0)
+        // Go to first step
+        this.go(0)
 
-        // // Save in Element
-        // this.$element.classList.add('code-steps-set')
-        // this.$element.codeSteps = this
+        // Save in Element
+        this.$element.classList.add('code-steps-set')
+        this.$element.codeSteps = this
     }
 
     setOptions(_options)
@@ -89,16 +89,12 @@ export default class CodeSteps
         this.code.baseHtml = this.Prism.highlight(this.code.text, this.Prism.languages[this.type], this.type)
 
         // Base fragment
-        const $baseFragment = document.createElement('div')
-        $baseFragment.innerHTML = this.code.baseHtml
-
-        // New fragment
-        const $newFragment = document.createDocumentFragment()
+        const $fragment = document.createElement('div')
+        $fragment.innerHTML = this.code.baseHtml
 
         // Seperate each letter of each token and save into lines
+        this.code.letters = []
         this.code.lines = []
-        let line = []
-        let latestLetter = null
 
         const extractLetters = (_input) =>
         {
@@ -109,13 +105,22 @@ export default class CodeSteps
                 if(child.nodeType === Node.TEXT_NODE)
                 {
                     const $letters = document.createElement('span')
+
                     for(const _letter of child.textContent)
                     {
-                        const $letter = document.createElement('span')
-                        $letter.innerHTML = _letter
-                        $letter.classList.add('cs-letter')
+                        const letter = {}
 
-                        $letters.appendChild($letter)
+                        letter.line = null
+                        letter.column = null
+                        letter.value = _letter
+
+                        letter.$element = document.createElement('span')
+                        letter.$element.innerHTML = _letter
+                        letter.$element.classList.add('cs-letter')
+
+                        $letters.appendChild(letter.$element)
+
+                        this.code.letters.push(letter)
                     }
 
                     _input.removeChild(child)
@@ -128,55 +133,36 @@ export default class CodeSteps
             }
         }
 
-        extractLetters($baseFragment)
+        extractLetters($fragment)
 
-        // this.code.$code.appendChild($baseFragment)
-        // for(const _$child of $baseFragment.childNodes)
-        // {
-        //     console.log(_$child)
-        //     for(const _letter of _$child.textContent)
-        //     {
-        //         // Create letter with same classes
-        //         const $letter = document.createElement('span')
-        //         $letter.innerHTML = _letter
-        //         $letter.classList.add('cs-letter')
+        // Add line and column
+        let lineIndex = 0
+        let columnIndex = 0
 
-        //         if(_$child.nodeType !== Node.TEXT_NODE)
-        //         {
-        //             $letter.classList.add(..._$child.classList)
-        //         }
+        for(const _letter of this.code.letters)
+        {
+            if(_letter.value === '\n')
+            {
+                lineIndex++
+                columnIndex = 0
+            }
 
-        //         // Add to new fragment
-        //         $newFragment.appendChild($letter)
+            _letter.line = lineIndex
+            _letter.column = columnIndex
 
-        //         // Save in current line
-        //         if(_letter !== '\n')
-        //         {
-        //             line.push($letter)
-        //         }
+            if(typeof this.code.lines[_letter.line] === 'undefined')
+            {
+                this.code.lines[_letter.line] = []
+            }
 
-        //         // Save line to lines if line break
-        //         else
-        //         {
-        //             this.code.lines.push(line)
-        //             line = []
-        //         }
+            this.code.lines[_letter.line].push(_letter)
 
-        //         // Save latest letter
-        //         latestLetter = _letter
-        //     }
-        // }
-
-        // // If latest letter saved wasn't a line break, save line
-        // if(latestLetter !== '\n')
-        // {
-        //     this.code.lines.push(line)
-        // }
+            columnIndex++
+        }
 
         // Set DOM and classes
         this.code.$code.innerHTML = ''
-        // this.code.$code.appendChild($newFragment)
-        this.code.$code.innerHTML = $baseFragment.innerHTML
+        this.code.$code.appendChild($fragment)
         this.code.$code.classList.add(`language-${this.type}`)
 
         this.code.$pre.classList.add(`language-${this.type}`)
@@ -191,7 +177,7 @@ export default class CodeSteps
         this.steps.rangesPattern = /\s*,\s*/
         this.steps.rangePattern = /\s*-\s*/
 
-        this.steps.base = typeof this.steps.base !== 'undefined' ? this.$element.dataset.steps : ''
+        this.steps.base = typeof this.$element.dataset.steps !== 'undefined' ? this.$element.dataset.steps : ''
 
         if(this.steps.base.trim() === '')
         {
@@ -201,7 +187,7 @@ export default class CodeSteps
         this.steps.all = this.parseSteps(this.steps.base)
     }
 
-    setDescription()
+    setDescriptions()
     {
         this.description = {}
         this.description.all = []
@@ -268,41 +254,32 @@ export default class CodeSteps
 
             for(const _range of step.ranges)
             {
-                for(const _lineIndex in this.code.lines)
+                for(const _letter of this.code.letters)
                 {
-                    const lineIndex = parseInt(_lineIndex)
-                    const line = this.code.lines[_lineIndex]
-
-                    for(const _letterIndex in line)
-                    {
-                        const letterIndex = parseInt(_letterIndex)
-                        const letter = line[_letterIndex]
-
-                        if(
-                            // Between lines
+                    if(
+                        // Between lines
+                        (
+                            _letter.line > _range.start.line && _letter.line < _range.end.line
+                        ) ||
+                        // One line and between columns
+                        (
+                            _range.start.line === _range.end.line &&
                             (
-                                lineIndex > _range.start.line && lineIndex < _range.end.line
-                            ) ||
-                            // One line and between columns
+                                (_letter.line === _range.start.line && _letter.column >= _range.start.column) &&
+                                (_letter.line === _range.end.line && _letter.column <= _range.end.column)
+                            )
+                        ) ||
+                        // One line and between columns
+                        (
+                            _range.start.line !== _range.end.line &&
                             (
-                                _range.start.line === _range.end.line &&
-                                (
-                                    (lineIndex === _range.start.line && letterIndex >= _range.start.column) &&
-                                    (lineIndex === _range.end.line && letterIndex <= _range.end.column)
-                                )
-                            ) ||
-                            // One line and between columns
-                            (
-                                _range.start.line !== _range.end.line &&
-                                (
-                                    (lineIndex === _range.start.line && letterIndex >= _range.start.column) ||
-                                    (lineIndex === _range.end.line && letterIndex <= _range.end.column)
-                                )
+                                (_letter.line === _range.start.line && _letter.column >= _range.start.column) ||
+                                (_letter.line === _range.end.line && _letter.column <= _range.end.column)
                             )
                         )
-                        {
-                            step.letters.push(letter)
-                        }
+                    )
+                    {
+                        step.letters.push(_letter)
                     }
                 }
             }
@@ -583,7 +560,7 @@ export default class CodeSteps
 
             for(const _letter of oldStep.letters)
             {
-                _letter.classList.remove('cs-is-active')
+                _letter.$element.classList.remove('cs-is-active')
             }
 
             if(oldStep.description)
@@ -597,7 +574,7 @@ export default class CodeSteps
 
         for(const _letter of newStep.letters)
         {
-            _letter.classList.add('cs-is-active')
+            _letter.$element.classList.add('cs-is-active')
         }
 
         if(newStep.description)
