@@ -509,27 +509,6 @@ export default class CodeSteps
         })
 
         this.navigation.index = null
-
-        window.addEventListener('keydown', (_event) =>
-        {
-            // Inactive
-            if(!this.active)
-            {
-                return
-            }
-
-            // Right arrow key
-            if(_event.key === 'ArrowRight')
-            {
-                this.next()
-            }
-
-            // Left arrow key
-            else if(_event.key === 'ArrowLeft')
-            {
-                this.previous()
-            }
-        })
     }
 
     previous()
