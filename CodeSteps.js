@@ -144,7 +144,7 @@ export default class CodeSteps
             if(_letter.value === '\n')
             {
                 lineIndex++
-                columnIndex = 0
+                columnIndex = - 1
             }
 
             _letter.line = lineIndex
