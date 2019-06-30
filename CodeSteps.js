@@ -423,6 +423,12 @@ export default class CodeSteps
             // Retrieve all sizes
             const containerBoundings = this.$element.getBoundingClientRect()
 
+            // Size is 0
+            if(containerBoundings.width === 0 || containerBoundings.height === 0)
+            {
+                return
+            }
+
             // Size didn't change
             if(containerBoundings.width === this.sizes.width && containerBoundings.height === this.sizes.height)
             {
