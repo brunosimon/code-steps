@@ -42,6 +42,10 @@
     bottom: var(--controls-padding);
     left: calc(var(--arrow-width) + var(--controls-padding) * 2);
     right: calc(var(--arrow-width) + var(--controls-padding) * 2);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .code-steps .cs-descriptions .cs-description
@@ -54,6 +58,7 @@
     height: var(--descriptions-height);
     align-items: center;
     justify-content: center;
+    pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s;
     will-change: opacity;
@@ -61,6 +66,7 @@
 
 .code-steps .cs-descriptions .cs-description.cs-is-active
 {
+    pointer-events: auto;
     opacity: 1;
     transition-delay: 0.2s;
 }
@@ -75,6 +81,11 @@
     color: #ffffff;
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     font-size: var(--font-size);
+}
+
+.code-steps .cs-descriptions .cs-description:not(:last-child) .cs-inner
+{
+    cursor: pointer;
 }
 
 /* Arrows */

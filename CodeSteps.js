@@ -246,6 +246,11 @@ export default class CodeSteps
                 step.description.$inner.textContent = step.text
                 step.description.$element.appendChild(step.description.$inner)
 
+                step.description.$element.addEventListener('click', () =>
+                {
+                    this.next()
+                })
+
                 this.description.$container.appendChild(step.description.$element)
             }
 
