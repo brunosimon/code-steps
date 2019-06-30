@@ -468,7 +468,7 @@ export default class CodeSteps
         this.navigation.arrows = {}
         this.navigation.arrows.$previous = document.createElement('div')
         this.navigation.arrows.$previous.classList.add('cs-arrow', 'cs-previous')
-        this.navigation.arrows.$previous.textContent = '⮕'
+        this.navigation.arrows.$previous.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"/></svg>'
         this.$element.appendChild(this.navigation.arrows.$previous)
 
         this.navigation.arrows.$previous.addEventListener('click', (_event) =>
@@ -486,7 +486,7 @@ export default class CodeSteps
 
         this.navigation.arrows.$next = document.createElement('div')
         this.navigation.arrows.$next.classList.add('cs-arrow', 'cs-next')
-        this.navigation.arrows.$next.textContent = '⮕'
+        this.navigation.arrows.$next.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.122 24l-4.122-4 8-8-8-8 4.122-4 11.878 12z"/></svg>'
         this.$element.appendChild(this.navigation.arrows.$next)
 
         this.navigation.arrows.$next.addEventListener('click', (_event) =>

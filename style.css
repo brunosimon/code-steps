@@ -112,6 +112,18 @@
     user-select: none;
 }
 
+.code-steps .cs-arrow svg
+{
+    position: relative;
+    left: 1px;
+    width: 12px;
+    height: 12px;
+}
+.code-steps .cs-arrow svg *
+{
+    fill: #ffffff;
+}
+
 .code-steps .cs-arrow.cs-is-active
 {
     opacity: 1;
