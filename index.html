@@ -18,8 +18,8 @@
         data-trim
         data-steps="
             *:Welcome to the Code Steps demo;
-            l1-l3:Retrieve elements from the DOM;
-            l5-l6,l10:Execute a fonction every 50ms;
+            l1-l3:Assign DOM elements to variables;
+            l5-l6,l10:Execute a fonction every 100ms;
             l7:Calculate video time progress (between 0 and 1);
             l9:Update DOM element
         "
@@ -34,7 +34,7 @@ window.setInterval(() =>
 	const progress = video.currentTime / video.duration
 
     bar.style.transform = `scaleX(${progress})`
-}, 50)
+}, 100)
         </code></pre>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/prism.js" data-manual></script>
